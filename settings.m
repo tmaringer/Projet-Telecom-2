@@ -1,8 +1,7 @@
 % taille des messages
-Ms = 10;
-Md = 12;
-M = Ms + Md;
-disp(M)
+Ms = [1 0 1 0];
+Mslen = length(Ms);
+Mdlen = 12;
 
 % nature des messages
 Nature = 'SI'; % SI, SGA, ...
@@ -18,11 +17,11 @@ Tb = 1;
 R = 1/Tb;
 
 % facteur de surechantill
-beta = 2;
+bet = 2;
 
 % paramètres du FIR
-alpha = 1;
-L = 5;
+alph = 0.25;
+L = 2;
 nb = 3;
 
 % puissance transmise et impédance du câble
@@ -30,7 +29,7 @@ Pt = 10;
 Zc = 5;
 
 % facteur de suréchantillonnage
-gamma = 4;
+gamm = 4;
 
 % paramètre du canal
 alphan = 2;
@@ -43,3 +42,11 @@ SNR = Eb/N0;
 
 % seuil pour le récepteur simplifié
 V = 4;
+
+
+% calcul de variables
+Tn = Tb/bet;
+Ta = Tn/gamm;
+f = [0;0.5/Ta];
+fn = f*2;
+Mlen = Mslen + Mdlen;
