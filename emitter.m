@@ -1,5 +1,5 @@
 function f = emitter()
-    settings;
+    setting;
     tablM = [];
     for n = 1:N % générer N messages et ajouter dans un tableau
         Md = round(rand(1,Mdlen)); % génération aléatoire
