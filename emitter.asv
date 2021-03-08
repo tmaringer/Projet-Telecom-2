@@ -15,10 +15,10 @@ function f = emitter()
     disp(col)
     for n = 1:col
         disp(n)
-        L = 10 + 1 * (n-1);
+        L = 0 + 1 * (n-1);
         k = tablM(1,n);
         b = k*rcosfir(0, L, bet);
-        plot((-bet*10):(length(b)-1-bet*10),b)
+        plot(0:length(b),b)
         hold on
     end
     f = b;
