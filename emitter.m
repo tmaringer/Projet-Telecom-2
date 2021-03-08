@@ -9,6 +9,6 @@ function f = emitter()
     tablM(tablM == 0) = -1; % codage des 0 en -1
     tablM(tablM == 1) = +1; % codage des 1 en +1
     
-    b = rcosdesign(alph, L, bet);
+    b = rcosdesign(alph, L, bet); % add-on
     f = b;
 end
