@@ -12,13 +12,21 @@ function f = emitter()
     %b = rcosdesign(alph, L, bet); % add-on Communication
     %b = rcosfir(0, L, bet, 1); % alpha = vitesse atténuation, centré en L*bet
     [row,col] = size(tablM);
-    disp(col)
-    for n = 1:col
-        disp(n)
-        L = 0 + 1 * (n-1);
-        k = tablM(1,n);
-        b = k*rcosfir(0, L, bet);
-        plot(0:length(b),b)
+    for m = 1:row
+        z= zeros(1,(bet*2*L1+1)+(2*bet)*(col-1));
+        for n = 1:col
+            disp(n)
+            %L = 10 + 1 * (n-1);
+            L = L1 + 1 * (n-1);
+            k = tablM(m,n);
+            disp(size(k*rcosfir(0, L, bet)));
+            w = k*rcosfir(0, L, bet);
+            w = [w zeros(1,(2*bet)*(col-n))];
+            z = z + w;
+            %g = plot(1:length(w),w);
+            %hold on
+        end
+        b = plot(1:length(z),z);
         hold on
     end
     f = b;
