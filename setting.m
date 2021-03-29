@@ -1,7 +1,7 @@
 % taille des messages
 Ms = [1 0 1 0];
 Mslen = length(Ms);
-Mdlen = 12;
+Mdlen = 11;
 
 % nature des messages
 Nature = 'SI'; % SI, SGA, ...
@@ -10,7 +10,7 @@ Nature = 'SI'; % SI, SGA, ...
 K = 3;
 
 % nombre de ressources phys dispo
-N = 100;
+N = 4;
 
 % débit binaire
 Tb = 1;
@@ -18,10 +18,10 @@ R = 1/Tb;
 
 % facteur de surechantill
 bet = 4*N-2;
-
+%bet = 30;
 % paramètres du FIR
 alph = 0.25;
-L1 = 2;
+L = 5;
 nb = 3;
 
 % puissance transmise et impédance du câble
@@ -45,8 +45,9 @@ V = 4;
 
 
 % calcul de variables
+fp = 10000;
 Tn = Tb/bet;
 Ta = Tn/gamm;
-f = [0;0.5/Ta];
+f = 0:Ta*gamm:0.5/Ta;
 fn = f*2;
 Mlen = Mslen + Mdlen;
