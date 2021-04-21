@@ -10,7 +10,7 @@ Nature = 'SI'; % SI, SGA, ...
 K = 3;
 
 % nombre de ressources phys dispo
-N = 4;
+N = 3;
 
 % débit binaire
 Tb = 1;
@@ -18,18 +18,18 @@ R = 1/Tb;
 
 % facteur de surechantill
 bet = 4*N-2;
-%bet = 30;
+%bet = 1000;
 % paramètres du FIR
-alph = 0.25;
+alph = 0.1;
 L = 5;
 nb = 3;
 
 % puissance transmise et impédance du câble
-Pt = 10;
-Zc = 5;
+Pt = 1;
+Zc = 50;
 
 % facteur de suréchantillonnage
-gamm = 4;
+gamm = 10;
 
 % paramètre du canal
 alphan = 2;
