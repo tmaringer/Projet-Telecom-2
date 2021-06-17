@@ -11,7 +11,7 @@ function f = canal(tabsig)
         taun = rand*Tb; %! Délai aléatoire entre 0 et Tb
         tau = [tau;round(taun*bet*gamm)]; %! Arrondir à un nombre entier d'échantillon de cadence Ta
     end
-<<<<<<< HEAD
+
     maxtau = max(tau); %! Trouver le délai maximum
     tabsig1 = zeros(N,(length(tabsig(1,:))+maxtau)); %! Ajouter des 0
 
@@ -48,7 +48,7 @@ function f = canal(tabsig)
     No = Eb/SNR; %! Déterminer N0 en fonction du SNR souhaité et de l'énergie d'un bit.
     variance = (No/2)*B; %! Calcul de la variance du bruit blanc
     AWGNoise = sqrt(variance)*randn(1,length(tabsig(1,:))); %! Génération du bruit blanc
-    signal = sum(tabsig) + AWGNoise; %! Somme du bruit blanc et de chaque signaux
+    signal = sum(tabsig) + AWGNoise; %! Somme du bruit blanc avec la somme des signaux
     hold off
 f = signal;
 end

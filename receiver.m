@@ -5,7 +5,7 @@ function f = receiver(ref, signal)
     %%%%%%% création des filtres %%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    tabbuttera = [];
+    tabbuttera = []; %! Tableau qui contiendra les composantes a des N filtres de Butterworth
     tabbutterb = [];
     [b,a] = butter(norder,(2/(3*Tb)), 'low','s'); % filtre passe-bas pour bande de base
     b = [zeros(1,(length(b)-1)),b];
@@ -14,11 +14,11 @@ function f = receiver(ref, signal)
     tabbuttera = [tabbuttera; a];
     if N ~= 1 % si pas bande de base
         for n = 1:N-1
-            fn = (2*(n)/Tb);
-            g = 2/(3*Tb);
-            fc = [fn-g,fn+g];
+            fn = (2*(n)/Tb); %! fréquence centrale du filtre
+            g = 2/(3*Tb); %! écart entre la fréquence centrale et les 2 fréquences de coupures.
+            fc = [fn-g,fn+g]; %! Les 2 fréquences de coupures du filtre
             [b,a] = butter(norder,fc, 's'); % filtre entre deux f de coupure
-            tabbutterb = [tabbutterb; b];
+            tabbutterb = [tabbutterb; b]; %! Ajout des coéficient b de ce filtre
             tabbuttera = [tabbuttera; a];
         end
     end
@@ -50,7 +50,7 @@ function f = receiver(ref, signal)
         hold on
         xlim([0 N*200]);
         subplot(2,2,2)
-        h2 = ifft(h, 'symmetric');
+        h2 = ifft(h, 'symmetric'); %! Réponse impulsionnelle des filtres
         if length(real(h2)) > 500
             h2 = h2(1:500);
         end
@@ -77,11 +77,11 @@ function f = receiver(ref, signal)
     %%%%%%% convolution réponses imp avec messages %%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    tabech = [];
+    tabech = []; %! Tableau des signaux filtrés pour chaque bande.
     for n = 1:N
         signall = signal(1:gamm:end);
         con = conv(signall,tabmag(n,:));
-        con = con/4;
+        con = con/4; %! Pas nécessaire
         tabech = [tabech;con];
         nexttile
         sig = con;
@@ -109,9 +109,9 @@ function f = receiver(ref, signal)
     for n = 1:N
         sig = tabech(n,:);
         refe = ref(n,:);
-        [c,lags] = xcorr(sig,refe);
+        [c,lags] = xcorr(sig,refe); %! Correllation croisée entre signal reçu et signal de référence (Ms) pour voir la ressemblance.
         c = c/max(c);
-        [~, i] = max(c);
+        [~, i] = max(c); %! Renvoie la posistion du maximum de c.
         t = lags(i);
         nexttile
         plot(lags,c,[t t],[-1 1],'r:')
