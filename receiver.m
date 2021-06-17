@@ -1,28 +1,32 @@
 function f = receiver(ref, signal)
     setting;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% création des filtres %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     tabbuttera = [];
     tabbutterb = [];
-    [b,a] = butter(norder,(2/(3*Tb)), 'low','s');
-    %[b,a] = butter(norder,150, 'low','s');
+    [b,a] = butter(norder,(2/(3*Tb)), 'low','s'); % filtre passe-bas pour bande de base
     b = [zeros(1,(length(b)-1)),b];
     tabbutterb = [tabbutterb; b];
-    %disp(size(tabbutterb));
     a = [zeros(1,(length(a)-1)),a];
     tabbuttera = [tabbuttera; a];
-    if N ~= 1
+    if N ~= 1 % si pas bande de base
         for n = 1:N-1
             fn = (2*(n)/Tb);
-            %disp(fn)
             g = 2/(3*Tb);
-            %g = 150;
             fc = [fn-g,fn+g];
-            %disp(fc)reslut
-            [b,a] = butter(norder,fc, 's');
-            %disp(size(b));
+            [b,a] = butter(norder,fc, 's'); % filtre entre deux f de coupure
             tabbutterb = [tabbutterb; b];
             tabbuttera = [tabbuttera; a];
         end
     end
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% affichage des filtres et création des réponses impulsionnelles %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     tabmag = [];
     figure();
     for n = 1:N
@@ -39,8 +43,6 @@ function f = receiver(ref, signal)
         ylim([-20, 1])
         xlim([0 N*200]);
         subplot(2,2,3)
-        %disp(size(delay));
-        %disp(size(w));
         plot(w(2:end),-delay)
         grid on
         xlabel('Frequency (Hz)')
@@ -48,34 +50,15 @@ function f = receiver(ref, signal)
         hold on
         xlim([0 N*200]);
         subplot(2,2,2)
-        %lk = 2^9;
-        %h = cat(2,(flip(conj(real(h)))).',(real(h)).');
-        %h1 = ifft(h);
-        %h2 = [real(h),flip(conj(real(h)))];
         h2 = ifft(h, 'symmetric');
-        %disp(size(h2))
-        %disp(size(h2));
-        %h2 = tf(tabbutterb(n,:),tabbuttera(n,:));
-        %h2 = impulse(h2).';
         if length(real(h2)) > 500
             h2 = h2(1:500);
         end
         NFFT=1024;      
         X=fftshift(fft(h2,NFFT));         
-        fVals=(1/Ta)*(-NFFT/2:NFFT/2-1)/NFFT;        
-        %plot(fVals,abs(X));
+        fVals=(1/Ta)*(-NFFT/2:NFFT/2-1)/NFFT;     
         plot(1:length(real(h2)),real(h2))
-        %disp(size(h2));
-        %xlim([0 5000])
-%         if n == N
-%             siz = length(h1);
-%         else
-%             h1 = [h1,zeros(1,siz-length(h1))];
-%         end
         tabmag = [tabmag;real(h2)];
-        %disp(h);
-        %plot(0:length(h)-1, h);
-        %impulse(1:length(h),h);
         hold on
         subplot(2,2,4)
         plot(1:length(imag(h2)),imag(h2))
@@ -89,6 +72,11 @@ function f = receiver(ref, signal)
     one = nexttile([1 2]);
     title(one, 'Received signal')
     plot(1:length(signal), signal);
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% convolution réponses imp avec messages %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     tabech = [];
     for n = 1:N
         signall = signal(1:gamm:end);
@@ -96,20 +84,22 @@ function f = receiver(ref, signal)
         con = con/4;
         tabech = [tabech;con];
         nexttile
-        %figure();
         sig = con;
         NFFT=1024;      
         X=fftshift(fft(con,NFFT));         
-        fVals=(1/Ta)*(-NFFT/2:NFFT/2-1)/NFFT;        
-        %plot(fVals,abs(X),'b');
+        fVals=(1/Ta)*(-NFFT/2:NFFT/2-1)/NFFT;
         plot(1:length(con),con);
         hold on
     end
-    figure();
+    figure(); % FFT pour vérifier
     NFFT=1024;      
     X=fftshift(fft(signal,NFFT));         
     fVals=(1/Ta)*(-NFFT/2:NFFT/2-1)/NFFT;        
     plot(fVals,abs(X));
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% corrélation avec les messages de réf %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     figure();
     t = tiledlayout(N/Lar,Lar);
@@ -128,6 +118,11 @@ function f = receiver(ref, signal)
         text(t+100,0.5,['Lag: ' int2str(t)])
         lag = [lag;t];
     end
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% quantification pour choix de 0 ou 1 %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     figure();
     t = tiledlayout(N/Lar,Lar);
     t.Padding = 'compact';
