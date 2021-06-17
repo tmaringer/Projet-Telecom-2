@@ -10,14 +10,15 @@ Nature = 'SI'; % SI, SGA, ...
 K = 3;
 
 % nombre de ressources phys dispo
+%! nombre de canaux
 N = 4;
 
 % débit binaire
-Tb = 0.01;
+Tb = 0.01; %! 100 bits/s
 R = 1/Tb;
 
-% facteur de surechantill
-%bet = 4*N-2;
+%! facteur de surechantillage
+% bet = 4*N-2;
 bet = 100;
 % paramètres du FIR
 alph = 0.1;
