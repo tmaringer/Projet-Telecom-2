@@ -10,7 +10,7 @@ Nature = 'SI'; % SI, SGA, ...
 K = 3;
 
 % nombre de ressources phys dispo
-N = 4;
+N = 12;
 
 % débit binaire
 Tb = 0.01;
@@ -49,4 +49,4 @@ norder = 5;
 Tn = Tb/bet;
 Ta = Tn/gamm;
 Mlen = Mslen + Mdlen;
-Lar = 2;
+Lar = 

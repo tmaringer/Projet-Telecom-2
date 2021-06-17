@@ -1,4 +1,4 @@
-function f = emitter()
+function f = references()
     setting;
     tablM = [];
     for n = 1:N % générer N messages et ajouter dans un tableau
@@ -49,12 +49,12 @@ function f = emitter()
         tabbj = [tabbj;bj];
         tabsig = [tabsig;w];
     end
-%     plot(1:length(tabbj),tabbj(1,:));
-%     hold on
-%     plot(1:length(tabbj),ones(length(tabbj)));
-%     hold on
-%     plot(1:length(tabbj),-ones(length(tabbj)));
-%     figure();
+    plot(1:length(tabbj),tabbj(1,:));
+    hold on
+    plot(1:length(tabbj),ones(length(tabbj)));
+    hold on
+    plot(1:length(tabbj),-ones(length(tabbj)));
+    figure();
     %disp(size(interpft(tabbj(3,:), gamm*(Mlen+2*L*bet))));
     %o = plot(1:(length(tablN(1,:))+2*L*bet),tabbj(1,:), 'o');
 %     hold off
