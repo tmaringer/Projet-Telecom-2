@@ -1,7 +1,12 @@
 function f = references()
     setting;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% générer N messages et ajouter dans un tableau %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     tablM = [];
-    for n = 1:N % générer N messages et ajouter dans un tableau
+    for n = 1:N
         tablM = [tablM;Ms];
     end
     tablM(tablM == 0) = -1; % codage des 0 en -1
@@ -15,13 +20,15 @@ function f = references()
     end
     %disp(tablN);
     
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% création d'un tableau avec les filtres %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     prefilter = rcosfir(alph,L,bet);
-    %disp(size(prefilter))
     filter_time = -(L*Tb):Tn:(L*Tb);
-    %disp(size(filter_time))
     
     tabfilter = [];
-    for n = 0:N-1 % création d'un tableau avec les filtres
+    for n = 0:N-1
         filter = prefilter .* cos(2*pi*2*n*filter_time/Tb);
         if n == 0
             plot(filter_time,filter);
@@ -30,14 +37,13 @@ function f = references()
             plot(filter_time,filter)
         end
         tabfilter = [tabfilter;filter];
-        %hold on
     end
-    %disp(tabfilter);
-    %disp(size(tabfilter));
     hold off
-    %legend('canal 0','canal 1')
-    %xlabel("numéro d'échantillon") 
-    %ylabel('FIR normalisé')
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%% convolution filtre avec message %%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     tabbj = [];
     for n = 0:N-1
         bj = conv(tablN(n+1,:),tabfilter(n+1,:));
